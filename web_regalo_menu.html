@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú Especial de Reyes</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            background-color: #2c2c2c;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .menu-paper {
+            background-color: #fdfbf7;
+            width: 100%;
+            max-width: 500px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            position: relative;
+            text-align: center;
+            border: 1px solid #e0e0e0;
+        }
+
+        .inner-border {
+            border: 2px solid #d4af37;
+            padding: 30px 20px;
+            height: 100%;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 5px;
+            color: #1a1a1a;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #d4af37;
+            margin-bottom: 40px;
+            display: block;
+        }
+
+        .course {
+            margin-bottom: 35px;
+            /* Static, no animation */
+            opacity: 1;
+        }
+
+        .course-type {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.7rem;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .dish-title {
+            font-size: 1.8rem;
+            margin: 5px 0;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .dish-desc {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1.2rem;
+            color: #666;
+            line-height: 1.4;
+            max-width: 90%;
+            margin: 0 auto;
+        }
+
+        .separator {
+            color: #d4af37;
+            margin: 15px 0;
+            font-size: 1.2rem;
+        }
+
+        .final-gift {
+            background-color: #fff8e1;
+            padding: 15px;
+            border: 1px dashed #d4af37;
+            margin-top: 20px;
+        }
+
+        .gift-details {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            color: #1a1a1a;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="menu-paper">
+        <div class="inner-border">
+            <h1>Menú Degustación</h1>
+            <span class="subtitle">Edición Especial Reyes Magos</span>
+
+            <div class="course">
+                <div class="course-type">Aperitivo</div>
+                <div class="dish-title">No ho sé...</div>
+                <div class="dish-desc">...pero segur que estarà bonissim.</div>
+                <div class="separator">~</div>
+            </div>
+
+            <div class="course">
+                <div class="course-type">Plato Principal</div>
+                <div class="dish-title">Tampoc ho sé...</div>
+                <div class="dish-desc">...però comparti-lo amb tu ja el fa brutal.</div>
+                <div class="separator">~</div>
+            </div>
+
+            <div class="course">
+                <div class="course-type">Postre</div>
+                <div class="dish-title">;)</div>
+                <div class="separator">~</div>
+            </div>
+
+            <div class="course final-gift">
+                <div class="course-type">Regal</div>
+                <h2 style="margin: 5px 0; font-size: 1.8rem;">VALE PER UN SOPAR</h2>
+                <div class="gift-details">
+                    <p style="margin: 5px 0;">Menú degustación de 10 pases <br>
+                        al restaurant Prodigi </p>
+                    <p style="margin-top: 15px;">📅 22 de Enero de 2026 • 21:30h</p>
+                    <p>📍 Barcelona</p>
+                    <p style="margin-top: 10px; font-style: italic; color: #555;">(Los 2 juntis)</p>
+                </div>
+            </div>
+
+            <p style="margin-top: 30px; font-size: 0.8rem; color: #ccc;">Felices Reyes 👑</p>
+        </div>
+    </div>
+
+</body>
+
+</html>

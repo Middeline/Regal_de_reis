@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MISTERIO REYES 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Courier+Prime:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #1a1510;
+            background-image:
+                linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)),
+                url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiIHZpZXdCb3g9IjAgMCA0IDQiPjxwYXRoIGZpbGw9IiMzZDJiMWYiIGQ9Ik0xIDNoMXYxSDFWM3ptMi0yaDF2MUgzVjF6IiBmaWxsLW9wYWNpdHk9IjAuMDUiLz48L3N2Zz4=');
+            /* Fallback texture */
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            font-family: 'Special Elite', cursive;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #333;
+            user-select: none;
+        }
+
+        /* --- DESK SURFACE --- */
+        .desk {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background: url('https://images.unsplash.com/photo-1544253325-15a95904fc72?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') center/cover;
+            /* Wood texture fallback */
+            box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.9);
+        }
+
+        /* The uploaded image as a mood overlay or desk mat */
+        .desk::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(40, 30, 20, 0.5);
+            /* Tint */
+            pointer-events: none;
+        }
+
+        /* --- ITEMS --- */
+        .item {
+            position: absolute;
+            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), z-index 0s;
+            cursor: pointer;
+            filter: drop-shadow(5px 5px 10px rgba(0, 0, 0, 0.5));
+            transform-origin: center;
+        }
+
+        .item:hover {
+            transform: scale(1.05) rotate(var(--r, 0deg));
+            z-index: 100 !important;
+        }
+
+        .item.case-file:hover {
+            /* Case file needs to keep the translate for centering */
+            transform: translate(-50%, -50%) rotate(-2deg) scale(1.05);
+        }
+
+        .item.active {
+            /* Center fixed */
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            z-index: 1000 !important;
+            cursor: default;
+            /* Simple scale for all items */
+            transform: translate(-50%, -50%) scale(1.5) !important;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 999;
+            display: none;
+            backdrop-filter: blur(5px);
+        }
+
+        /* --- 1. CASE FILE --- */
+        .case-file {
+            top: 50%;
+            left: 50%;
+            width: 350px;
+            height: auto;
+            min-height: 250px;
+            background: #d2b48c;
+            transform: translate(-50%, -50%) rotate(-2deg);
+            padding: 30px 20px 20px;
+            /* Increased top padding */
+            box-sizing: border-box;
+            border-radius: 2px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #a08060;
+            box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+            /* Give it slight priority in stack */
+        }
+
+        /* --- EXTRA CLUE (Carolina) --- */
+        .carolina-clue {
+            top: auto;
+            bottom: 2%;
+            /* Abajo de todo */
+            left: 55%;
+            /* Centrada (50%) pero un pelín a la derecha */
+            right: auto;
+            width: 320px;
+            /* Increased size */
+            height: auto;
+            transform: translateX(-50%) rotate(2deg);
+            /* Raw image style: No background, no border, no extra shadow beyond drop-shadow */
+            background: transparent;
+            padding: 0;
+            box-shadow: none;
+            z-index: 20;
+            /* Ensure it's on top of potentially overlapping items */
+        }
+
+        .carolina-clue img {
+            width: 100%;
+            display: block;
+            border: none;
+            /* Ensure no border on image itself if any global rules apply */
+        }
+
+        .file-tab {
+            position: absolute;
+            top: -15px;
+            left: 0;
+            width: 120px;
+            height: 20px;
+            background: #d2b48c;
+            border-radius: 5px 5px 0 0;
+            border: 1px solid #a08060;
+            border-bottom: none;
+            padding: 2px 10px;
+            font-size: 0.8rem;
+            color: #5d4037;
+        }
+
+        .stamp {
+            border: 3px double #b71c1c;
+            color: #b71c1c;
+            padding: 5px 10px;
+            font-size: 1.2rem;
+            transform: rotate(-10deg);
+            display: inline-block;
+            margin-top: 10px;
+            font-weight: bold;
+            opacity: 0.8;
+        }
+
+        /* --- 2. CALENDAR --- */
+        .calendar-page {
+            top: 15%;
+            left: 10%;
+            width: 200px;
+            height: auto;
+            background: #fff;
+            transform: rotate(5deg);
+            padding: 5px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            font-family: 'Courier Prime', monospace;
+            cursor: pointer;
+        }
+
+        .calendar-page img {
+            width: 100%;
+            display: block;
+        }
+
+        /* --- 3. CLOCK (Style as Photo) --- */
+        .pocket-watch {
+            top: 10%;
+            right: 15%;
+            width: 150px;
+            /* Slightly wider for polaroid look */
+            height: auto;
+            transform: rotate(15deg);
+            background: white;
+            padding: 10px 10px 30px 10px;
+            /* Polaroid padding */
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            filter: none;
+            /* Remove gold glow */
+            text-align: center;
+        }
+
+        .pocket-watch img {
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 0;
+            /* Square corners for photo */
+            box-shadow: none;
+            display: block;
+        }
+
+        /* --- 4. MAP --- */
+        .map-scrap {
+            bottom: 10%;
+            left: 15%;
+            width: 220px;
+            height: 180px;
+            background: #fdfbf7;
+            transform: rotate(-8deg);
+            border: 1px solid #ccc;
+            overflow: hidden;
+            background-image: url('assets/img/pista_mapa.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .map-pin {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            /* Centered roughly */
+            font-size: 2rem;
+            color: #d32f2f;
+            text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+            animation: bouncePin 1s infinite alternate;
+        }
+
+        @keyframes bouncePin {
+            to {
+                transform: translateY(-5px);
+            }
+        }
+
+        .map-note {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 0.6rem;
+            padding: 5px;
+            text-align: center;
+            font-family: 'Courier Prime', monospace;
+            border-top: 1px solid #ccc;
+        }
+
+        /* --- 5. PHOTOS --- */
+        .polaroid {
+            background: white;
+            padding: 10px 10px 40px 10px;
+            /* More bottom padding for text */
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            width: 180px;
+            text-align: center;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.65rem;
+            color: #333;
+            z-index: 5;
+            transition: transform 0.3s;
+        }
+
+        .polaroid img {
+            width: 100%;
+            height: auto;
+            border: 1px solid #ccc;
+            display: block;
+        }
+
+        /* Composition for Photo 2 */
+        .photo-container {
+            position: relative;
+            width: 100%;
+            height: 160px;
+            /* Fixed height for consistency */
+            overflow: hidden;
+            border: 1px solid #eee;
+        }
+
+        .photo-container img.bg-plate {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-container img.tiny-food {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 4%;
+            /* Tiny! */
+            height: auto;
+            border: none;
+            cursor: crosshair;
+        }
+
+        /* Zoom behavior for tiny food */
+        .item.active .photo-container img.tiny-food {
+            /* When polaroid is zoomed, food remains relatively small but clickable/visible if you look close */
+            width: 4%;
+        }
+
+        .zoom-action-btn {
+            display: none;
+            margin: 10px auto 0;
+            padding: 5px 10px;
+            background: #d4af37;
+            border: 1px solid #333;
+            cursor: pointer;
+            font-family: 'Courier Prime', monospace;
+            font-weight: bold;
+        }
+
+        .item.active .zoom-action-btn {
+            display: block;
+        }
+
+        /* Mega Zoom State */
+        .photo-container.mega-zoomed img.tiny-food {
+            width: 50% !important;
+            /* Make it huge */
+            transition: width 0.5s ease;
+        }
+
+        .photo-container.mega-zoomed {
+            cursor: zoom-out;
+        }
+
+        .photo-1 {
+            top: 15%;
+            left: 25%;
+            transform: rotate(-12deg);
+        }
+
+        .photo-2 {
+            bottom: 25%;
+            right: 20%;
+            transform: rotate(8deg);
+        }
+
+        /* --- 6. NOTEBOOK (SOLUTION) --- */
+        .notebook {
+            bottom: 5%;
+            right: 5%;
+            width: 280px;
+            height: 350px;
+            background: #f5f5f5;
+            border-top: 15px solid #333;
+            transform: rotate(-3deg);
+            padding: 20px;
+            box-sizing: border-box;
+            font-family: 'Courier Prime', monospace;
+        }
+
+        .notebook h2 {
+            font-size: 1.2rem;
+            border-bottom: 2px solid #333;
+            margin-top: 0;
+        }
+
+        .notebook label {
+            display: block;
+            margin-top: 10px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .notebook input {
+            width: 100%;
+            border: none;
+            border-bottom: 1px dashed #999;
+            background: transparent;
+            font-family: 'Special Elite', cursive;
+            font-size: 1rem;
+            color: #000080;
+            outline: none;
+            padding: 5px 0;
+        }
+
+        .notebook button {
+            margin-top: 20px;
+            width: 100%;
+            padding: 10px;
+            background: #333;
+            color: white;
+            font-family: 'Special Elite', cursive;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .notebook button:hover {
+            background: #555;
+        }
+
+        /* --- MODAL / SUCCESS --- */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            color: white;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .modal.visible {
+            display: flex;
+        }
+
+        .modal h1 {
+            color: #d4af37;
+            font-size: 3rem;
+        }
+
+        .err-msg {
+            color: #ff5252;
+            margin-top: 10px;
+            font-weight: bold;
+            display: none;
+        }
+
+        /* Close button for zoomed items */
+        .close-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 1001;
+            display: none;
+        }
+
+        .hint-text {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="overlay" id="overlay"></div>
+    <button class="close-btn" id="closeBtn">×</button>
+
+    <div class="desk" id="desk">
+
+        <!-- WARNING HEADER -->
+        <div
+            style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); width: 80%; text-align: center; color: rgba(255,255,255,0.7); text-shadow: 1px 1px 5px black; z-index: 1;">
+            <h1 style="margin:0; font-size: 1.5rem; letter-spacing: 2px;">⚠️ ADVERTENCIA: SI NO RESUELVES EL MISTERIO...
+                TE QUEDAS SIN REGALO XD
+            </h1>
+        </div>
+
+        <!-- EXTRA CLUE (Pau Sujeto) -->
+        <div class="item carolina-clue" onclick="zoomItem(this)">
+            <img src="assets/img/pista_pau_sujeto.png" alt="Pista Pau">
+        </div>
+
+        <!-- 1. CASE FILE (INSTRUCTIONS) -->
+        <div class="item case-file" onclick="zoomItem(this)">
+            <div class="file-tab">TOP SECRET</div>
+            <h2 style="font-size: 2rem; margin-bottom: 5px;">CASO: REYES</h2>
+            <div class="stamp">EVIDENCIA</div>
+            <p style="font-size: 0.9rem; line-height: 1.6;">
+                <strong>Detalle:</strong> El sospechoso habitual, Pau, mentiroso compolsivo, manos flojas y sin regalo
+                aparente.<br>
+                <strong>Misión:</strong> Debe analizar las pistas dispersas en este escritorio.<br>
+                <strong>Objetivo:</strong> Determinar LUGAR, FECHA, HORA y ACTIVIDAD.<br>
+                <br>
+                <em>"El diablo está en los detalles..."</em>
+            </p>
+        </div>
+
+        <!-- 2. CALENDAR -->
+        <div class="item calendar-page" onclick="zoomItem(this)">
+            <img src="assets/img/pista_calendario_final.png" alt="Calendario Pista">
+        </div>
+    </div>
+
+    <!-- 3. CLOCK -->
+    <div class="item pocket-watch" onclick="zoomItem(this)">
+        <img src="assets/img/pista_reloj.jpg" alt="Reloj Cartier">
+    </div>
+
+    <!-- 4. MAP -->
+    <div class="item map-scrap" onclick="zoomItem(this)">
+        <div class="map-pin">📍</div>
+        <div class="map-note">si no saps on es, jo de tu abandonaria el regal.</div>
+    </div>
+
+    <!-- 5. PHOTOS -->
+    <div class="item polaroid photo-1" onclick="zoomItem(this)">
+        <img src="assets/img/pista_platos.png" alt="Pila de platos">
+        <div style="margin-top:5px; line-height: 1.2;">Parece la pica de nuestro futuro piso, pero nope, es una
+            pista real.</div>
+    </div>
+
+    <div class="item polaroid photo-2" onclick="zoomItem(this)">
+        <div class="photo-container" id="photoContainer2">
+            <img src="assets/img/pista_plato_vacio.png" class="bg-plate" alt="Plato">
+            <img src="assets/img/pista_pollo.png" class="tiny-food" id="tinyFood" alt="Comida">
+        </div>
+        <button class="zoom-action-btn" onclick="event.stopPropagation(); toggleMegaZoom()">🔍 SUPER ZOOM</button>
+        <div style="margin-top:5px; line-height: 1.2;">Ponte las gafas si no ves... o haz zoom xd</div>
+    </div>
+
+    <!-- 6. NOTEBOOK (FORM) -->
+    <div class="item notebook" id="notebook">
+        <h2>CONCLUSIONES</h2>
+        <form id="mysteryForm" onsubmit="event.preventDefault(); solveMystery();">
+            <label>📍 ¿DÓNDE?</label>
+            <input type="text" id="inputPlace" placeholder="Ciudad..." autocomplete="off">
+
+            <label>📅 ¿CUÁNDO?</label>
+            <input type="text" id="inputDate" placeholder="Día..." autocomplete="off">
+
+            <label>⌚ ¿HORA?</label>
+            <input type="text" id="inputTime" placeholder="Ej: 10:00" autocomplete="off">
+
+            <label>🧐 ¿QUÉ ES?</label>
+            <input type="text" id="inputWhat" placeholder="Actividad..." autocomplete="off">
+
+            <p class="err-msg" id="errMsg">Datos incorrectos. Sigue buscando.</p>
+
+            <button type="submit">CERRAR CASO</button>
+        </form>
+    </div>
+
+    </div>
+
+    <!-- SUCCESS MODAL -->
+    <div class="modal" id="successModal">
+        <div class="hint-text">🎉 CASO RESUELTO 🎉</div>
+        <h1 id="ticketTitle">Esque mi niño es más listoo</h1>
+        <p style="font-size: 1.5rem;">T'estimo molt!❣️</p>
+        <br>
+        <button
+            style="padding: 15px 30px; font-size: 1.5rem; cursor: pointer; background: #d4af37; border: none; color: #000;"
+            onclick="window.location.href='web_regalo_menu.html'">
+            VEURE EL REGAL COMPLET
+        </button>
+    </div>
+
+    <script>
+        let zoomedItem = null;
+
+        function zoomItem(el) {
+            if (zoomedItem) return; // Prevent double zoom
+            zoomedItem = el;
+
+            // Calculate center
+            const rect = el.getBoundingClientRect();
+
+            // Apply zoom class
+            el.classList.add('active');
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('closeBtn').style.display = 'block';
+        }
+
+        function closeZoom() {
+            if (!zoomedItem) return;
+
+            // Reset any mega zooms
+            const containers = zoomedItem.querySelectorAll('.photo-container');
+            containers.forEach(c => c.classList.remove('mega-zoomed'));
+
+            zoomedItem.classList.remove('active');
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('closeBtn').style.display = 'none';
+
+            zoomedItem = null;
+        }
+
+        function toggleMegaZoom() {
+            const container = document.getElementById('photoContainer2');
+            container.classList.toggle('mega-zoomed');
+        }
+
+        // Click outside to close
+        document.getElementById('overlay').addEventListener('click', closeZoom);
+        document.getElementById('closeBtn').addEventListener('click', closeZoom);
+
+        function solveMystery() {
+            const place = document.getElementById('inputPlace').value.toLowerCase();
+            const date = document.getElementById('inputDate').value.toLowerCase();
+            const time = document.getElementById('inputTime').value.toLowerCase();
+            const what = document.getElementById('inputWhat').value.toLowerCase();
+
+            // Validation Logic (Fuzzy)
+            const validPlace = place.includes('barcelona') || place.includes('bcn');
+            const validDate = date.includes('22') || date.includes('enero') || date.includes('2026');
+            const validTime = time.includes('21:30') || time.includes('9:30');
+            const validWhat = what.includes('cena') || what.includes('restaurante') || what.includes('degus') || what.includes('menu');
+
+            const errMsg = document.getElementById('errMsg');
+
+            if (validPlace && validDate && validTime && validWhat) {
+                errMsg.style.display = 'none';
+                document.getElementById('successModal').classList.add('visible');
+                // Celebrate!
+                // launchConfetti();
+            } else {
+                errMsg.style.display = 'block';
+
+                // Shake effect on notebook
+                const notebook = document.getElementById('notebook');
+                notebook.style.transform = 'translate(5px, 0) rotate(-3deg)';
+                setTimeout(() => notebook.style.transform = 'translate(-5px, 0) rotate(-3deg)', 50);
+                setTimeout(() => notebook.style.transform = 'translate(5px, 0) rotate(-3deg)', 100);
+                setTimeout(() => notebook.style.transform = 'translate(0, 0) rotate(-3deg)', 150);
+            }
+        }
+    </script>
+</body>
+
+</html>
+```

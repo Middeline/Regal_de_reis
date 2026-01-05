@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Per tu❣️</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&family=Cormorant+Garamond:ital,wght@1,500;1,700&display=swap"
+        rel="stylesheet">
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            background-color: #111;
+        }
+
+        /* --- FASE 1: LA HISTORIA (SCROLL) --- */
+        .story-container {
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+            height: 100vh;
+            width: 100vw;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 10;
+            transition: opacity 1s ease;
+        }
+
+        section {
+            height: 100vh;
+            width: 100vw;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+            color: white;
+            position: relative;
+        }
+
+        /* Fondos de las secciones - Imágenes F1 con overlay para lectura */
+        #s1 {
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('assets/img/bg_s1.png') center/cover no-repeat;
+        }
+
+        #s2 {
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('assets/img/bg_s2.png') center/cover no-repeat;
+        }
+
+        #s3 {
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('assets/img/bg_s3.png') center/cover no-repeat;
+        }
+
+        #s4 {
+            background: #111;
+        }
+
+        /* Fondo negro para la caja */
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            max-width: 600px;
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 30px;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0);
+            }
+
+            40% {
+                transform: translateY(-10px);
+            }
+
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        /* --- FASE 2: LA CAJA --- */
+        .gift-box {
+            font-size: 100px;
+            cursor: pointer;
+            animation: shake 2s infinite;
+            user-select: none;
+        }
+
+        @keyframes shake {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            25% {
+                transform: rotate(5deg);
+            }
+
+            50% {
+                transform: rotate(0deg);
+            }
+
+            75% {
+                transform: rotate(-5deg);
+            }
+
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+
+        .tap-text {
+            margin-top: 20px;
+            color: #d4af37;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+        }
+
+        /* Confeti */
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            z-index: 100;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="story-container" id="story">
+
+        <section id="s1">
+            <h1>Primer de tot...</h1>
+            <p>Volia dir-te que t'estimo molt, i que no judgis la meva petita primera web després de molt de tempps...
+                tot i que tenies raó, avui en dia la IA és una LOCURA.</p>
+            <div class="scroll-hint">↓ Desliza hacia abajo ↓</div>
+        </section>
+
+        <section id="s2">
+            <h1>Confieso que...</h1>
+            <p> He de dir que tot i que era una opció que no contemplava i he fet per tú, perquè, que te puede hacer más
+                feliz que una WEB para abrir el regalo??
+                m'ha agradat, ho he fet perquè sempre parles amb molta passió sobre el que fas cada dia, i desenvolupar
+                ara sense fer les coses que donen mandra no està mal. </p>
+            <div class="scroll-hint">↓</div>
+        </section>
+
+        <section id="s3">
+            <h1>Espero que t'agradi❣️</h1>
+            <p> És un regal per compartir, sigue haciendo scroll que la IA ha hecho 3 pantallas y estoy harta de
+                mandarle prompts... </p>
+            <div class="scroll-hint">↓ Mira abajo ↓</div>
+        </section>
+
+        <section id="s4">
+            <div class="gift-box" onclick="openGift()">🎁</div>
+            <div class="tap-text">Obre el teu super regal!✨ </div>
+        </section>
+    </div>
+
+    <script>
+        function openGift() {
+            // Efecto de sonido (opcional, visualmente es confeti)
+            createConfetti();
+
+            // Ocultar la historia
+            const story = document.getElementById('story');
+            story.style.opacity = '0';
+
+            // Redirigir al misterio tras un breve delay
+            setTimeout(() => {
+                window.location.href = 'web_regalo_mistery.html';
+            }, 1500);
+        }
+
+        function createConfetti() {
+            for (let i = 0; i < 60; i++) {
+                const colors = ['#d4af37', '#fdfbf7', '#ff6b6b', '#4ecdc4'];
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.top = Math.random() * 50 + 'vh'; // Empiezan algo más abajo
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+
+                document.body.appendChild(confetti);
+
+                const keyframes = [
+                    { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
+                    { transform: `translateY(${window.innerHeight}px) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+                ];
+
+                confetti.animate(keyframes, {
+                    duration: Math.random() * 1500 + 1000,
+                    fill: 'forwards'
+                });
+            }
+        }
+    </script>
+</body>
+
+</html>
